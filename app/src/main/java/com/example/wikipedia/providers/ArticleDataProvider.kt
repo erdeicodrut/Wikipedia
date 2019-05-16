@@ -10,10 +10,9 @@ import java.io.Reader
 import java.lang.Exception
 import javax.inject.Inject
 
-class ArticleDataProvider {
+class ArticleDataProvider @Inject constructor() {
 
-    @Inject
-    constructor(){
+    init {
         FuelManager.instance.baseHeaders = mapOf("User-Agent" to "Pluralsight Wikipedia")
     }
 
@@ -25,8 +24,8 @@ class ArticleDataProvider {
                 throw Exception("Unable to get articles")
             }
 
-            val(data,_) = result
-            responseHandler.invoke(data as WikiResult)
+            val data  = result.component1()!!
+            responseHandler.invoke(data)
         }
     }
 
@@ -36,8 +35,8 @@ class ArticleDataProvider {
             if (response.statusCode != 200){
                 throw Exception("Unable to get articles")
             }
-            val(data, _) = result
-            responseHandler.invoke(data as WikiResult)
+            val data = result.component1()!!
+            responseHandler.invoke(data)
         }
     }
 

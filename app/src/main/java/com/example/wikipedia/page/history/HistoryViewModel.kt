@@ -1,6 +1,5 @@
-package com.example.wikipedia.page.favorites
+package com.example.wikipedia.page.history
 
 import androidx.lifecycle.ViewModel
 
-class HistoryViewModel : ViewModel() {
-}
+class HistoryViewModel : ViewModel()

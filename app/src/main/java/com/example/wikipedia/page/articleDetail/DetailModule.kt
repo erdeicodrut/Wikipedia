@@ -3,7 +3,6 @@ package com.example.wikipedia.page.articleDetail
 import dagger.Module
 import dagger.Provides
 
-
 @Module
 class DetailModule {
 

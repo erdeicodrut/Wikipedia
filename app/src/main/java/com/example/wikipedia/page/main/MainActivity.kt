@@ -11,15 +11,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity<MainViewModel, MainViewModelFactory>(MainViewModel::class.java){
 
-    private var exploreFragment : ExploreFragment
-    private val favoritesFragment : FavoritesFragment
-    private val historyFragment : HistoryFragment
-
-    init {
-        exploreFragment = ExploreFragment.newInstance("F")
-        favoritesFragment = FavoritesFragment.newInstance()
-        historyFragment = HistoryFragment.newInstance()
-    }
+    private var exploreFragment : ExploreFragment = ExploreFragment.newInstance("F")
+    private val favoritesFragment : FavoritesFragment = FavoritesFragment.newInstance()
+    private val historyFragment : HistoryFragment = HistoryFragment.newInstance()
 
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
@@ -46,6 +40,5 @@ class MainActivity : BaseActivity<MainViewModel, MainViewModelFactory>(MainViewM
         val transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.fragment_container,exploreFragment)
         transaction.commit()
-
     }
 }

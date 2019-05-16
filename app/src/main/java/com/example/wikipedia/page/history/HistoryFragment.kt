@@ -1,63 +1,47 @@
 package com.example.wikipedia.page.history
 
 
-import com.example.wikipedia.Managers.WIkiManager
 import com.example.wikipedia.adapters.ArticleListItemRecyclerAdapter
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.example.wikipedia.WikiApplication
 import android.view.*
+import androidx.recyclerview.widget.RecyclerView
 
 import com.example.wikipedia.R
 import com.example.wikipedia.base.BaseFragment
 import com.example.wikipedia.models.Page
-import com.example.wikipedia.page.favorites.FavoritesViewModel
-import com.example.wikipedia.page.favorites.FavoritesViewModelFactory
-import com.example.wikipedia.page.favorites.HistoryViewModel
-import com.example.wikipedia.page.favorites.HistoryViewModelFactory
-import dagger.android.support.DaggerFragment
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.noButton
 import org.jetbrains.anko.yesButton
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
  *
  */
-class HistoryFragment : BaseFragment<HistoryViewModel, HistoryViewModelFactory>(HistoryViewModel::class.java){
+class HistoryFragment : BaseFragment<HistoryViewModel, HistoryViewModelFactory>(HistoryViewModel::class.java) {
 
     companion object {
-
         fun newInstance() = HistoryFragment()
-
     }
 
-
-    var historyRecycler: androidx.recyclerview.widget.RecyclerView? = null
+    lateinit var historyRecycler: RecyclerView
     var adapter: ArticleListItemRecyclerAdapter = ArticleListItemRecyclerAdapter()
 
-    init{
+    init {
         setHasOptionsMenu(true)
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val view =  inflater.inflate(R.layout.fragment_history, container, false)
+        val view = inflater.inflate(R.layout.fragment_history, container, false)
 
-        historyRecycler = view.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.history_recycler)
-        historyRecycler!!.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
-        historyRecycler!!.adapter = adapter
+        historyRecycler = view.findViewById(R.id.history_recycler)
+        historyRecycler.run {
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+            adapter = adapter
+        }
         return view
     }
 
@@ -68,7 +52,7 @@ class HistoryFragment : BaseFragment<HistoryViewModel, HistoryViewModelFactory>(
 
 
             adapter.currentResults.clear()
-            val historyArticles = wikiManager!!.getHistory()
+            val historyArticles = wikiManager.getHistory()
             adapter.currentResults.clear()
             adapter.currentResults.addAll(historyArticles as ArrayList<Page>)
 
@@ -83,17 +67,16 @@ class HistoryFragment : BaseFragment<HistoryViewModel, HistoryViewModelFactory>(
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item!!.itemId == R.id.clear_history){
-            activity!!.alert("Are you sure?","Confirm"){
+        if (item?.itemId == R.id.clear_history) {
+            activity?.alert("Are you sure?", "Confirm") {
                 yesButton {
                     adapter.currentResults.clear()
                     doAsync {
-                        wikiManager!!.clearHistory()
+                        wikiManager.clearHistory()
                     }
-                    activity!!.runOnUiThread { adapter.notifyDataSetChanged() }
+                    activity?.runOnUiThread { adapter.notifyDataSetChanged() }
                 }
-                noButton {  }
-            }.show()
+            }?.show()
 
         }
         return true

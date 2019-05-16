@@ -7,13 +7,11 @@ import com.example.wikipedia.R
 import com.example.wikipedia.holders.ListItemHolder
 import com.example.wikipedia.models.Page
 
-class ArticleListItemRecyclerAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<ListItemHolder>() {
+class ArticleListItemRecyclerAdapter : RecyclerView.Adapter<ListItemHolder>() {
 
-    val currentResults:ArrayList<Page> = ArrayList<Page>()
+    val currentResults:ArrayList<Page> = ArrayList()
 
-    override fun getItemCount(): Int {
-        return currentResults.size
-    }
+    override fun getItemCount() = currentResults.size
 
     override fun onBindViewHolder(holder: ListItemHolder, position: Int) {
         val page = currentResults[position]
@@ -21,7 +19,7 @@ class ArticleListItemRecyclerAdapter : androidx.recyclerview.widget.RecyclerView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ListItemHolder {
-        var cardItem = LayoutInflater.from(parent.context).inflate(R.layout.article_list_item,parent,false)
+        val cardItem = LayoutInflater.from(parent.context).inflate(R.layout.article_list_item,parent,false)
         return ListItemHolder(cardItem)
     }
 }

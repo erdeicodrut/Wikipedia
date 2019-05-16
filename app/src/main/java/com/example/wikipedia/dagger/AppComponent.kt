@@ -9,13 +9,13 @@ import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 
 @ApplicationScope
-@Component(modules = [AndroidSupportInjectionModule::class,AppModule::class,ActivityBuilder::class])
+@Component(modules = [AndroidSupportInjectionModule::class, AppModule::class, ActivityBuilder::class])
 interface AppComponent : AndroidInjector<WikiApplication> {
 
     override fun inject(instance: WikiApplication)
 
     @Component.Builder
-    interface Builder{
+    interface Builder {
 
         @BindsInstance
         fun application(application: Application): Builder

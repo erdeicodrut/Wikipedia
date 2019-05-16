@@ -22,9 +22,13 @@ class AppModule {
     fun provideContext(application: WikiApplication): Context = application
 
     @Provides
-    fun provideDbHelper(context: Context) : ArticleDatabaseOpenHelper = ArticleDatabaseOpenHelper(context)
+    fun provideDbHelper(context: Context): ArticleDatabaseOpenHelper = ArticleDatabaseOpenHelper(context)
 
     @Provides
-    fun provideManager(dataProvider: ArticleDataProvider,favoritesRepository: FavoritesRepository,historyRepository: HistoryRepository): WIkiManager = WIkiManager(dataProvider,favoritesRepository,historyRepository)
+    fun provideManager(
+        dataProvider: ArticleDataProvider,
+        favoritesRepository: FavoritesRepository,
+        historyRepository: HistoryRepository
+    ): WIkiManager = WIkiManager(dataProvider, favoritesRepository, historyRepository)
 
 }

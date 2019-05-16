@@ -11,15 +11,15 @@ import javax.inject.Inject
 
 class HistoryRepository @Inject constructor(val databaseHelper: ArticleDatabaseOpenHelper) {
 
-    private val TABLE_NAME: String = "History"
+    private val TABLENAME: String = "History"
 
     fun addHistory(page: Page) : Boolean {
-        var pages = getAllHistory()
+        val pages = getAllHistory()
         if (!pages.any { it ->
                 it.pageid == page.pageid}) {
             databaseHelper.use {
                 insert(
-                    TABLE_NAME,
+                    TABLENAME,
                     "id" to page.pageid,
                     "title" to page.title,
                     "url" to page.fullurl,
@@ -34,14 +34,14 @@ class HistoryRepository @Inject constructor(val databaseHelper: ArticleDatabaseO
 
     fun removeHistoryById(pageId: Int) {
         databaseHelper.use {
-            delete(TABLE_NAME, "id = {pageid}", "pageid" to pageId)
+            delete(TABLENAME, "id = {pageid}", "pageid" to pageId)
         }
     }
 
     fun getAllHistory(): ArrayList<Page> {
 
 
-        var pages = ArrayList<Page>()
+        val pages = ArrayList<Page>()
 
         val articleRowParser = rowParser { id: Int, title: String, url:String, thumbnailJson: String ->
             val page = Page()
@@ -54,7 +54,7 @@ class HistoryRepository @Inject constructor(val databaseHelper: ArticleDatabaseO
         }
 
         databaseHelper.use{
-            select(TABLE_NAME).parseList(articleRowParser)
+            select(TABLENAME).parseList(articleRowParser)
         }
 
         return pages

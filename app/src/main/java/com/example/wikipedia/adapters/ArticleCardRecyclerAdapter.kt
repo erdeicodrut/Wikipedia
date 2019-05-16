@@ -7,22 +7,20 @@ import com.example.wikipedia.R
 import com.example.wikipedia.holders.CardHolder
 import com.example.wikipedia.models.Page
 
-class ArticleCardRecyclerAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<CardHolder>() {
+class ArticleCardRecyclerAdapter : RecyclerView.Adapter<CardHolder>() {
 
-    val currentResults: ArrayList<Page> = ArrayList<Page>()
+    val currentResults: ArrayList<Page> = ArrayList()
 
-    override fun getItemCount(): Int {
-        return currentResults.size
-    }
+    override fun getItemCount() = currentResults.size
+
 
     override fun onBindViewHolder(holder: CardHolder, position: Int) {
-        var page=currentResults[position]
+        val page = currentResults[position]
         holder.updateWithPage(page)
-
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, p1: Int): CardHolder {
-        var cardItem = LayoutInflater.from(parent.context).inflate(R.layout.article_card_item,parent,false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardHolder {
+        val cardItem = LayoutInflater.from(parent.context).inflate(R.layout.article_card_item, parent, false)
         return CardHolder(cardItem)
     }
 }

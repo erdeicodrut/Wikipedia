@@ -6,17 +6,17 @@ import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
 
-abstract class BaseActivity<VM : ViewModel, VMF : ViewModelProvider.Factory>(private val vmClass: Class<VM>) :
+abstract class BaseActivity<viewModel : ViewModel, viewModelFactory : ViewModelProvider.Factory>(private val viewModelClass: Class<viewModel>) :
     DaggerAppCompatActivity(),LifecycleOwner
     {
 
     @Inject
-    lateinit var viewModelFactory: VMF
+    lateinit var viewModelFactory: viewModelFactory
 
-    protected lateinit var viewModel: VM
+    private lateinit var viewModel: viewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(vmClass)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(viewModelClass)
     }
 }

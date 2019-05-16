@@ -11,47 +11,49 @@ import javax.inject.Inject
 
 class FavoritesRepository @Inject constructor(val databaseHelper: ArticleDatabaseOpenHelper) {
 
-    private val TABLE_NAME: String = "Favorites"
+    private val TABLENAME = "Favorites"
 
-    fun addFavorite(page: Page){
-        databaseHelper.use{
-            insert(TABLE_NAME,
+    fun addFavorite(page: Page) {
+        databaseHelper.use {
+            insert(
+                TABLENAME,
                 "id" to page.pageid,
                 "title" to page.title,
                 "url" to page.fullurl,
-                "thumbnailJson" to Gson().toJson(page.thumbnail))
+                "thumbnailJson" to Gson().toJson(page.thumbnail)
+            )
 
         }
     }
 
-    fun removeFavoriteById(pageId: Int){
-        databaseHelper.use{
-            delete(TABLE_NAME, "id = {pageid}", "pageid" to pageId)
+    fun removeFavoriteById(pageId: Int) {
+        databaseHelper.use {
+            delete(TABLENAME, "id = {pageid}", "pageid" to pageId)
         }
     }
 
-    fun isArticleFavorite(pageId : Int) : Boolean{
-        var pages = getAllFavorites()
-        return pages.any{ page ->
+    fun isArticleFavorite(pageId: Int): Boolean {
+        val pages = getAllFavorites()
+        return pages.any { page ->
             page.pageid == pageId
         }
     }
 
-    fun getAllFavorites() : ArrayList<Page>{
-        var pages =  ArrayList<Page>()
+    fun getAllFavorites(): ArrayList<Page> {
+        val pages = ArrayList<Page>()
 
-        val articleRowParser = rowParser{id : Int, title: String,url:String,thumbnailJson : String ->
-            val page= Page()
+        val articleRowParser = rowParser { id: Int, title: String, url: String, thumbnailJson: String ->
+            val page = Page()
             page.title = title
             page.pageid = id
-            page.thumbnail = Gson().fromJson(thumbnailJson,Thumbnail::class.java)
+            page.thumbnail = Gson().fromJson(thumbnailJson, Thumbnail::class.java)
             page.fullurl = url
 
             pages.add(page)
         }
 
-        databaseHelper.use{
-            select(TABLE_NAME).parseList(articleRowParser)
+        databaseHelper.use {
+            select(TABLENAME).parseList(articleRowParser)
         }
 
         return pages

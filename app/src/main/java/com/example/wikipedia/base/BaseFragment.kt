@@ -10,18 +10,18 @@ import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 
-abstract class BaseFragment<VM : ViewModel, VMF : ViewModelProvider.Factory>(private val vmClass: Class<VM>) : DaggerFragment(), LifecycleOwner {
+abstract class BaseFragment<viewModel : ViewModel, viewModelFactory : ViewModelProvider.Factory>(private val viewModelClass: Class<viewModel>) : DaggerFragment(), LifecycleOwner {
 
     @Inject
-    lateinit var wikiManager: WIkiManager
+    protected lateinit var wikiManager: WIkiManager
 
     @Inject
-    lateinit var viewModelFactory: VMF
+    private lateinit var viewModelFactory: viewModelFactory
 
-    protected lateinit var viewModel: VM
+    private lateinit var viewModel: viewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(vmClass)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(viewModelClass)
     }
 }

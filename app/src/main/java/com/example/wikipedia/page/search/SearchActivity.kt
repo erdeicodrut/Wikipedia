@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_search.*
 
 class SearchActivity : BaseActivity<SearchViewModel, SearchViewModelFactory>(SearchViewModel::class.java) {
 
-    private var wikiManager: WIkiManager? = null
+    private lateinit var wikiManager: WIkiManager
     private var adapter: ArticleListItemRecyclerAdapter = ArticleListItemRecyclerAdapter()
 
 
@@ -28,14 +28,14 @@ class SearchActivity : BaseActivity<SearchViewModel, SearchViewModelFactory>(Sea
         setContentView(R.layout.activity_search)
         wikiManager = (applicationContext as WikiApplication).wikiManager
         setSupportActionBar(toolbar)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         search_recycler.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
         search_recycler.adapter = adapter
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if(item!!.itemId == android.R.id.home){
+        if (item?.itemId == android.R.id.home) {
             finish()
         }
         return true
@@ -43,7 +43,7 @@ class SearchActivity : BaseActivity<SearchViewModel, SearchViewModelFactory>(Sea
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.search_menu,menu)
+        menuInflater.inflate(R.menu.search_menu, menu)
 
         val searchItem = menu!!.findItem(R.id.action_search)
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
@@ -51,19 +51,18 @@ class SearchActivity : BaseActivity<SearchViewModel, SearchViewModelFactory>(Sea
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
         searchView.setIconifiedByDefault(false)
         searchView.requestFocus()
-        searchView.setOnQueryTextListener(object:SearchView.OnQueryTextListener {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-               wikiManager?.search(query,0,20) { wikiResult ->
-                   adapter.currentResults.clear()
-                   adapter.currentResults.addAll(wikiResult.query!!.pages)
-                   runOnUiThread{adapter.notifyDataSetChanged()}
-               }
+                wikiManager.search(query, 0, 20) { wikiResult ->
+                    adapter.currentResults.clear()
+                    adapter.currentResults.addAll(wikiResult.query!!.pages)
+                    runOnUiThread { adapter.notifyDataSetChanged() }
+                }
                 return false
             }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return false
-            }
+            override fun onQueryTextChange(newText: String?) = false
+
         })
         return super.onCreateOptionsMenu(menu)
     }
